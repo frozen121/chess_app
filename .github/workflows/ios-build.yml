@@ -41,3 +41,12 @@ jobs:
         with:
           name: ios-simulator-appetize
           path: build/ios/iphonesimulator/ios-simulator-appetize.zip
+
+      - name: Build unsigned IPA
+        run: flutter build ipa --release --no-codesign
+
+      - name: Upload artifact (unsigned ipa)
+        uses: actions/upload-artifact@v7
+        with:
+          name: ios-ipa-unsigned
+          path: build/ios/ipa/*.ipa
