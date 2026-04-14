@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
 
 class GameProvider extends ChangeNotifier {
   final chess.Chess _chess = chess.Chess();
+  final Random _random = Random();
   String _profileName = 'Аноним';
   String? selectedSquare;
   String? gameEndReason;
@@ -97,13 +98,30 @@ class GameProvider extends ChangeNotifier {
   bool _resultRecorded = false;
 
   Duration _botMoveDelayByDifficulty() {
-    if (botDifficulty == 'Сложный') {
-      return const Duration(seconds: 3);
+    int minSeconds;
+    int maxSeconds;
+
+    switch (botDifficulty) {
+      case 'Сложный':
+        // Сильный бот отвечает быстрее и стабильнее.
+        minSeconds = 3;
+        maxSeconds = 5;
+        break;
+      case 'Средний':
+        minSeconds = 5;
+        maxSeconds = 8;
+        break;
+      case 'Лёгкий':
+      default:
+        // Лёгкий бот думает дольше и менее предсказуемо.
+        minSeconds = 3;
+        maxSeconds = 10;
+        break;
     }
-    if (botDifficulty == 'Средний') {
-      return const Duration(milliseconds: 900);
-    }
-    return const Duration(milliseconds: 500);
+
+    final randomizedSeconds =
+        minSeconds + _random.nextInt(maxSeconds - minSeconds + 1);
+    return Duration(seconds: randomizedSeconds);
   }
 
   String _resultMessageForWinner(chess.Color winnerColor) {
