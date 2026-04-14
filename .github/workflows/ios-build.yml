@@ -40,7 +40,7 @@ jobs:
           zip -r ios-simulator-appetize.zip Runner.app
 
       - name: Upload artifact (appetize zip)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ios-simulator-appetize
           path: build/ios/iphonesimulator/ios-simulator-appetize.zip
